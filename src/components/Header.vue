@@ -1,16 +1,16 @@
 <template>
   <div class="my_header">
-    <button @click="openFolder">Открыть папку</button>
-    <button @click="addFolder">Добавить папку</button>
-    <button @click="createEmptyCard">Создать пустую папку</button>
-    <button @click="clearTitles">Очистить старые номера</button>
-    <button @click="flatExport">Экспорт</button>
+    <button @click="openFolder">Импорт</button>
+    <button @click="addFolder">Добавить</button>
+    <button @click="createEmptyCard">Создать папку</button>
+    <button @click="clearTitles">Очистить номера</button>
+    <button @click="flatExport">Экспорт списком</button>
   </div>
 </template>
 
 <script>
 import {v4 as uuid} from "uuid";
-import { useStore } from '../store'
+import {useStore} from '../store'
 
 export default {
   name: 'Header',
@@ -49,7 +49,7 @@ export default {
       }
       await window.electron.ipcRenderer.invoke('export-files', cards)
       alert('Экспорт выполнен успешно')
-    }
+    },
   },
 };
 </script>
@@ -61,10 +61,13 @@ export default {
   background-color: lightgray;
   padding: 5px;
   border: 1px solid #ddd;
-  //box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
   z-index: 1000;
+  display: flex;
+  justify-content: space-between; /* Распределяет кнопки */
+  gap: 3px;
 }
+
 .my_header button {
-  margin-right: 3px;
+  flex-grow: 1; /* Заставляет кнопки занимать равную ширину */
 }
 </style>

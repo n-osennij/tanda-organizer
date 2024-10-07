@@ -16,8 +16,7 @@ async function copyAndRenameFiles(cards) {
         for (let folder of cards) {
             let fileIndex = 1;
             for (let item of folder.items) {
-                let title = item.title.replace(/\.mp3$/, '');
-                let newFileName = renameFile(title, folderIndex, fileIndex);
+                let newFileName = renameFile(item.title.trim(), folderIndex, fileIndex);
                 let newFilePath = `${targetDir}/${newFileName}`;
 
                 // Копируем файл с новым именем
@@ -46,12 +45,13 @@ async function selectTargetDirectory() {
 
 // Функция для переименования файла
 function renameFile(file_name, folderIndex, fileIndex) {
-    return `${folderIndex}${fileIndex}_${file_name}.mp3`;
+    const formattedFolderIndex = folderIndex.toString().padStart(2, '0');
+    return `${formattedFolderIndex}${fileIndex}_${file_name}`;
 }
 
 // Функция для копирования файла
 async function copyFile(sourcePath, newFilePath) {
-    const fs = require('fs').promises; // Используем промисы для работы с файловой системой
+    const fs = require('fs').promises;
     try {
         await fs.copyFile(sourcePath, newFilePath);
     } catch (error) {

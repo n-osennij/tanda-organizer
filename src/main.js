@@ -1,6 +1,7 @@
 import {openFolder} from "./ipc/import";
 import {handleExportFiles} from "./ipc/export";
 import {openFile} from "./ipc/open";
+
 const {app, BrowserWindow, ipcMain, Menu, globalShortcut} = require('electron');
 const path = require('node:path');
 
@@ -16,6 +17,8 @@ ipcMain.handle('export-files', handleExportFiles);
 // Подготовка окна приложения
 const createWindow = () => {
     const mainWindow = new BrowserWindow({
+        minWidth: 500,
+        minHeight: 300,
         width: 800,
         height: 800,
         webPreferences: {

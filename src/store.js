@@ -4,9 +4,7 @@ export const useStore = defineStore('store', {
     state: () => ({
         cards: [],
     }),
-    getters: {
-
-    },
+    getters: {},
     actions: {
         addCard(card) {
             this.cards.push(card);

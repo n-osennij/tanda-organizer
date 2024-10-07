@@ -7,7 +7,7 @@
       item-key="id"
   >
     <template :key="index" v-slot:item="{element, index}">
-      <Card :index="index" :card="element"/>
+      <Card :card="element" :index="index"/>
     </template>
   </draggable>
 </template>

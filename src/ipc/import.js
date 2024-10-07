@@ -29,7 +29,8 @@ async function dirStructure(folderPath) {
     }
     const rootFiles = await scanSubFolder(folderPath);
     if (rootFiles.length > 0) {
-        const root_name = folderPath.split('/').pop();
+        const normalizedPath = folderPath.replace(/\\/g, '/'); // заменяем все \ на /
+        const root_name = normalizedPath.split('/').pop(); // получаем последнее имя папки
         structure.push({
             id: uuid(),
             title: root_name,
