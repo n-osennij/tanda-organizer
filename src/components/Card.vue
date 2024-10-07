@@ -54,10 +54,10 @@ export default {
   },
   methods: {
     updateItemOrder(newItems) {
-      this.store.cards[this.index].items = [...newItems];
+      this.store.setCardItems(this.index, newItems);
     },
     removeCard() {
-      this.store.cards.splice(this.index, 1);
+      this.store.removeCard(this.index);
     }
   },
 };

@@ -16,6 +16,9 @@ export const useStore = defineStore('store', {
                 this.addCard(card);
             }
         },
+        removeCard(index) {
+            this.cards.splice(index, 1);
+        },
         washTitle(title) {
             return title.replace(/^[^a-zA-Zа-яА-Я]*(?=[a-zA-Zа-яА-Я])/, '').trim();
         },
@@ -26,6 +29,9 @@ export const useStore = defineStore('store', {
                     item.title = this.washTitle(item.title);
                 }
             }
+        },
+        setCardItems(card_index, newItems) {
+            this.cards[card_index].items = [...newItems];
         },
     },
 })
