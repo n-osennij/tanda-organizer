@@ -1,26 +1,24 @@
 <template>
-  <div :data-index="index" class="card" :key="index">
-    <div class="hb">
-      <div class="ch">
+  <div class="card">
+    <div class="card-header">
+      <div>
         <span>{{ index + 1 }}</span>
-        <span class="card-header">{{ title }}</span>
+        <span class="card-title">{{ card.title }}</span>
       </div>
-      <div class="cd">
-        <small>
-          <a class="del" href="#" @click.prevent="removeCard">убрать</a>
-        </small>
-      </div>
+      <small class="remove">
+        <a href="#" @click.prevent="removeCard">убрать</a>
+      </small>
     </div>
     <draggable
         :animation="150"
         :ghost-class="'sortable-ghost'"
-        :model-value="items"
+        :model-value="card.items"
         group="list"
-        item-key="name"
+        item-key="id"
         @update:model-value="updateItemOrder"
     >
       <template #item="{element, index}">
-        <ListItem :cards="cards" :index="index" :item="element" :key="index"/>
+        <ListItem :index="index" :item="element"/>
       </template>
     </draggable>
   </div>
@@ -29,6 +27,7 @@
 <script>
 import draggable from 'vuedraggable';
 import ListItem from './ListItem.vue';
+import {useStore} from "../store";
 
 export default {
   components: {
@@ -36,31 +35,30 @@ export default {
     ListItem,
   },
   props: {
-    title: {
-      type: String,
-      required: true,
-    },
-    items: {
-      type: Array,
-      required: true,
-    },
     index: {
       type: Number,
       required: true,
     },
-    removeCard: {
-      type: Function,
-      required: true,
-    },
-    cards: {
-      type: Array,
+    card: {
+      type: {
+        id: String,
+        title: String,
+        items: Array,
+      },
       required: true,
     },
   },
+  setup() {
+    const store = useStore();
+    return {store};
+  },
   methods: {
     updateItemOrder(newItems) {
-      this.$emit('update-item-order', newItems, this.index); // Передаем новый массив и index
+      this.store.cards[this.index].items = [...newItems];
     },
+    removeCard() {
+      this.store.cards.splice(this.index, 1);
+    }
   },
 };
 </script>
@@ -73,23 +71,18 @@ export default {
   padding: 5px;
 }
 
-.card-header {
+.card-title {
   font-weight: bold;
   margin-left: 10px;
 }
 
-.hb {
+.card-header {
   display: flex;
   justify-content: space-between;
   align-items: center;
 }
 
-.ch {
-  display: flex;
-  align-items: center;
-}
-
-.cd a {
+.remove a {
   color: #656565;
   text-decoration: none;
 }

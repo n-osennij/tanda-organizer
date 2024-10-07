@@ -1,6 +1,7 @@
-const {app, BrowserWindow, ipcMain, shell, dialog} = require('electron');
+const {app, BrowserWindow, ipcMain, shell, dialog, Menu, globalShortcut} = require('electron');
 import fs from "fs";
-import {v4 as uuidv4} from 'uuid';
+import {v4 as uuid} from 'uuid';
+
 const path = require('node:path');
 
 // IPC для выбора папки и получения её содержимого
@@ -24,7 +25,7 @@ async function dirStructure(folderPath) {
         const filePath = path.join(folderPath, file.name);
         if (file.isDirectory()) {
             structure.push({
-                id: uuidv4(),
+                id: uuid(),
                 title: file.name,
                 items: await scanSubFolder(filePath),
             });
@@ -34,7 +35,7 @@ async function dirStructure(folderPath) {
     if (rootFiles.length > 0) {
         const root_name = folderPath.split('/').pop();
         structure.push({
-            id: uuidv4(),
+            id: uuid(),
             title: root_name,
             items: rootFiles,
         });
@@ -49,7 +50,7 @@ async function scanSubFolder(folder) {
     for (const file of files) {
         if (!file.isDirectory()) {
             items.push({
-                id: uuidv4(),
+                id: uuid(),
                 title: file.name,
                 path: path.join(folder, file.name),
             });
@@ -62,6 +63,7 @@ async function scanSubFolder(folder) {
 
 // IPC для проигрывания файла
 ipcMain.handle('open-file', openFile);
+
 async function openFile(event, filePath) {
     try {
         await shell.openPath(filePath);
@@ -77,6 +79,7 @@ async function openFile(event, filePath) {
 ipcMain.handle('export-files', async (event, cards) => {
     return await copyAndRenameFiles(cards);
 });
+
 // Основная функция для копирования файлов
 async function copyAndRenameFiles(cards) {
     try {
@@ -133,9 +136,6 @@ async function copyFile(sourcePath, newFilePath) {
 }
 
 
-
-
-
 // Подготовка окна приложения
 const createWindow = () => {
     const mainWindow = new BrowserWindow({
@@ -148,9 +148,19 @@ const createWindow = () => {
         },
     });
 
+    // Устанавливаем меню приложения в null для его скрытия
+    Menu.setApplicationMenu(null);
+
+    // Регистрация глобального сочетания клавиш F5
+    globalShortcut.register('F5', () => {
+        if (mainWindow) {
+            mainWindow.reload(); // Перезагрузка окна
+        }
+    });
+
     // Загружаем URL или файл
     mainWindow.loadURL(MAIN_WINDOW_VITE_DEV_SERVER_URL || path.join(__dirname, 'index.html'));
-    mainWindow.webContents.openDevTools({ mode: 'detach' });
+    mainWindow.webContents.openDevTools({mode: 'detach'});
 };
 
 // Создание окна приложения

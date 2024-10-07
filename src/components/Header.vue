@@ -9,56 +9,62 @@
 </template>
 
 <script>
-import {v4 as uuidv4} from "uuid";
+import {v4 as uuid} from "uuid";
+import { useStore } from '../store'
 
 export default {
   name: 'Header',
+  setup() {
+    const store = useStore();
+    return {store};
+  },
   methods: {
     async openFolder() {
-      try {
-        const cards = await window.electron.ipcRenderer.invoke('open-folder');
-        if (cards.length > 0) {
-          this.$emit('folder-opened', cards);
-        }
-      } catch (error) {
-        console.error('Ошибка при выборе папки:', error);
+      const cards = await window.electron.ipcRenderer.invoke('open-folder');
+      if (cards && cards.length > 0) {
+        this.store.cards = cards;
       }
     },
     async addFolder() {
-      try {
-        const cards = await window.electron.ipcRenderer.invoke('open-folder');
-        if (cards.length > 0) {
-          this.$emit('append-cards', cards);
-        }
-      } catch (error) {
-        console.error('Ошибка при выборе папки:', error);
+      const cards = await window.electron.ipcRenderer.invoke('open-folder');
+      if (cards.length > 0) {
+        this.store.addCards(cards);
       }
     },
     createEmptyCard() {
-      this.$emit('add-card', {
-        id: uuidv4(),
+      this.store.addCard({
+        id: uuid(),
         title: 'perfect tanda',
         items: []
-      });
+      })
     },
     clearTitles() {
-      this.$emit('clear-titles');
+      this.store.clearTitles();
     },
     async flatExport() {
-      this.$emit('export-files');
+      const cards = JSON.parse(JSON.stringify(this.store.cards));
+      if (cards.length < 1) {
+        console.log('nothing export')
+        return;
+      }
+      await window.electron.ipcRenderer.invoke('export-files', cards)
+      alert('Экспорт выполнен успешно')
     }
   },
 };
 </script>
 
 <style scoped>
-  .my_header {
-    position: sticky;
-    top: 0;
-    background-color: lightgray;
-    padding: 5px;
-    border: 1px solid #ddd;
-    //box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
-    z-index: 1000;
-  }
+.my_header {
+  position: sticky;
+  top: 0;
+  background-color: lightgray;
+  padding: 5px;
+  border: 1px solid #ddd;
+  //box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+  z-index: 1000;
+}
+.my_header button {
+  margin-right: 3px;
+}
 </style>
