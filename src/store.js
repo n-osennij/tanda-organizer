@@ -3,6 +3,18 @@ import {defineStore} from 'pinia'
 export const useStore = defineStore('store', {
     state: () => ({
         cards: [],
+        contextMenu: {
+            visible: false,
+            x: 0,
+            y: 0,
+            content: "",
+        },
+        contextMenu2: {
+            visible: false,
+            x: 0,
+            y: 0,
+            content: "",
+        }
     }),
     getters: {},
     actions: {
@@ -30,6 +42,18 @@ export const useStore = defineStore('store', {
         },
         setCardItems(card_index, newItems) {
             this.cards[card_index].items = [...newItems];
+        },
+        openContextMenu(event, content) {
+            this.contextMenu.visible = true;
+            this.contextMenu.x = event.clientX;
+            this.contextMenu.y = event.clientY;
+            this.contextMenu.content = content;
+        },
+        closeContextMenu() {
+            this.contextMenu.visible = false;
+            this.contextMenu.x = 0;
+            this.contextMenu.y = 0;
+            this.contextMenu.content = '';
         },
     },
 })

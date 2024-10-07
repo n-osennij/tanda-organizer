@@ -1,10 +1,12 @@
 <template>
-  <li :data-path="item.path">
+  <li :data-path="item.path" @contextmenu.prevent="openContextMenu($event, item)">
     <span>{{ index + 1 }}. </span>{{ item.title }}
   </li>
 </template>
 
 <script>
+import {useStore} from "../store";
+
 export default {
   props: {
     item: {
@@ -20,6 +22,15 @@ export default {
       required: true,
     },
   },
+  setup() {
+    const store = useStore();
+    return {store};
+  },
+  methods: {
+    openContextMenu(event) {
+      this.store.openContextMenu(event, `You clicked on ${this.item.title}`)
+    },
+  }
 };
 </script>
 

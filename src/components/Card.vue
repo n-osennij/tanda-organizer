@@ -1,6 +1,6 @@
 <template>
   <div class="card">
-    <div class="card-header">
+    <div class="card-header" @contextmenu.prevent="openContextMenu($event)">
       <div>
         <span>{{ index + 1 }}</span>
         <span class="card-title">{{ card.title }}</span>
@@ -15,6 +15,7 @@
         :model-value="card.items"
         group="list"
         item-key="id"
+        @start="this.store.closeContextMenu()"
         @update:model-value="updateItemOrder"
     >
       <template #item="{element, index}">
@@ -58,7 +59,10 @@ export default {
     },
     removeCard() {
       this.store.removeCard(this.index);
-    }
+    },
+    openContextMenu(event) {
+      this.store.openContextMenu(event, `You clicked on ${this.card.title}`)
+    },
   },
 };
 </script>
