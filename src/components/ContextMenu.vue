@@ -4,7 +4,9 @@
        class="context-menu"
        @click.stop
   >
-    <p>{{ menu.content }}</p>
+    <div class="card-buttons">
+      <button v-for="(card, index) in this.store.cards">{{index + 1}}</button>
+    </div>
   </div>
 </template>
 
@@ -44,5 +46,19 @@ export default {
   border: 1px solid #ccc;
   padding: 10px;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  max-width: 220px; /* Увеличиваем максимальную ширину */
+  width: 100%; /* Позволяем меню занимать всю доступную ширину */
 }
+
+.card-buttons {
+  display: flex;
+  flex-wrap: wrap; /* Позволяет кнопкам переноситься на следующую строку */
+  gap: 1px;
+}
+
+.card-buttons button {
+  flex-grow: 1;
+}
+
+
 </style>
