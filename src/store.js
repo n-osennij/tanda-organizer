@@ -7,14 +7,9 @@ export const useStore = defineStore('store', {
             visible: false,
             x: 0,
             y: 0,
-            content: "",
+            type: 0,
+            context: Object,
         },
-        contextMenu2: {
-            visible: false,
-            x: 0,
-            y: 0,
-            content: "",
-        }
     }),
     getters: {},
     actions: {
@@ -43,17 +38,21 @@ export const useStore = defineStore('store', {
         setCardItems(card_index, newItems) {
             this.cards[card_index].items = [...newItems];
         },
-        openContextMenu(event, content) {
-            this.contextMenu.visible = true;
-            this.contextMenu.x = event.clientX;
-            this.contextMenu.y = event.clientY;
-            this.contextMenu.content = content;
+        openContextMenu(event, type, context) {
+            const menu = this.contextMenu;
+            menu.visible = true;
+            menu.x = event.clientX;
+            menu.y = event.clientY;
+            menu.type = parseInt(type);
+            menu.context = context;
         },
         closeContextMenu() {
-            this.contextMenu.visible = false;
-            this.contextMenu.x = 0;
-            this.contextMenu.y = 0;
-            this.contextMenu.content = '';
+            const menu = this.contextMenu;
+            menu.visible = false;
+            menu.x = 0;
+            menu.y = 0;
+            menu.type = 0;
+            menu.context = Object;
         },
     },
 })

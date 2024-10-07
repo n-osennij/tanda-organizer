@@ -19,7 +19,7 @@
         @update:model-value="updateItemOrder"
     >
       <template #item="{element, index}">
-        <ListItem :index="index" :item="element"/>
+        <ListItem :index="index" :item="element" :card_index="this.index"/>
       </template>
     </draggable>
   </div>
@@ -61,7 +61,7 @@ export default {
       this.store.removeCard(this.index);
     },
     openContextMenu(event) {
-      this.store.openContextMenu(event, `You clicked on ${this.card.title}`)
+      this.store.openContextMenu(event, 1, {index: this.index, item: this.card})
     },
   },
 };

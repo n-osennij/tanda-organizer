@@ -21,6 +21,10 @@ export default {
       type: Number,
       required: true,
     },
+    card_index: {
+      type: Number,
+      required: true,
+    },
   },
   setup() {
     const store = useStore();
@@ -28,7 +32,11 @@ export default {
   },
   methods: {
     openContextMenu(event) {
-      this.store.openContextMenu(event, `You clicked on ${this.item.title}`)
+      this.store.openContextMenu(event, 2, {
+        card_index: parseInt(this.card_index),
+        item_index: parseInt(this.index),
+        item: this.item
+      });
     },
   }
 };
