@@ -7,7 +7,9 @@
     <div v-if="menu.type === 1">
       <span>Сделайть танду n-ой:</span>
       <div class="card-buttons">
-        <button v-for="(card, index) in store.cards">{{ index + 1 }}</button>
+        <button v-for="(card, index) in store.cards" @click="moveCard(index)">
+          {{ index + 1 }}
+        </button>
       </div>
     </div>
     <div v-if="menu.type === 2">
@@ -66,6 +68,22 @@ export default {
     spliceItem(card_id, item_id) {
       this.store.cards[card_id].items.splice(item_id, 1);
     },
+    moveCard(to) {
+      const {type, context} = this.menu;
+      if (type !== 1 || !context) {
+        return;
+      }
+
+      const from = context.card_index;
+      const cards = this.store.cards;
+      if (from < 0 || from >= cards.length || to < 0 || to >= cards.length) {
+        return;
+      }
+      const [movedItem] = cards.splice(from, 1); // Удаляем объект с позиции `from`
+      cards.splice(to, 0, movedItem); // Вставляем объект на позицию `to`
+
+      this.handleClickOutside();
+    }
   }
 };
 </script>

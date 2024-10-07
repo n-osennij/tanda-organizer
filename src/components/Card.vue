@@ -61,7 +61,7 @@ export default {
       this.store.removeCard(this.index);
     },
     openContextMenu(event) {
-      this.store.openContextMenu(event, 1, {index: this.index, item: this.card})
+      this.store.openContextMenu(event, 1, {card_index: this.index, item: this.card})
     },
   },
 };
