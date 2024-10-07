@@ -41,8 +41,8 @@ export const useStore = defineStore('store', {
         openContextMenu(event, type, context) {
             const menu = this.contextMenu;
             menu.visible = true;
-            menu.x = event.clientX;
-            menu.y = event.clientY;
+            menu.x = event.pageX;
+            menu.y = event.pageY;
             menu.type = parseInt(type);
             menu.context = context;
         },
