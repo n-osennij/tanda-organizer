@@ -6,7 +6,7 @@
                 <span class="card-title">{{ card.title }}</span>
             </div>
             <small class="remove">
-                <a href="#" @click.prevent="removeCard">убрать</a>
+
             </small>
         </div>
         <draggable
@@ -56,9 +56,6 @@ export default {
     methods: {
         updateItemOrder(newItems) {
             this.store.setCardItems(this.index, newItems);
-        },
-        removeCard() {
-            this.store.removeCard(this.index);
         },
         openContextMenu(event) {
             this.store.openContextMenu(event, 1, {card_index: this.index, item: this.card})

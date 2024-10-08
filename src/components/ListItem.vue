@@ -45,7 +45,7 @@ export default {
 <style scoped>
 li {
     list-style-type: none;
-    margin-left: 10px;
+    margin-left: 18px;
     cursor: default;
 }
 

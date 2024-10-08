@@ -4,6 +4,7 @@
          class="context-menu"
          @click.stop
     >
+        <!-- Клик по заголовку карточки/танды -->
         <div v-if="menu.type === 1">
             <span>Сделайть танду n-ой:</span>
             <div class="card-buttons">
@@ -11,7 +12,11 @@
                     {{ index + 1 }}
                 </button>
             </div>
+            <ul class="items-menu">
+                <li @click="removeCard">Убрать</li>
+            </ul>
         </div>
+        <!-- Клик по элементу карточки/мелодии -->
         <div v-if="menu.type === 2">
             <span>Переместить в танду:</span>
             <div class="card-buttons">
@@ -19,11 +24,9 @@
                     {{ index + 1 }}
                 </button>
             </div>
-            <ul>
-                <li>1</li>
-                <li>2</li>
-                <li>3</li>
-                <li></li>
+            <ul class="items-menu">
+                <li>Открыть</li>
+                <li>Убрать</li>
             </ul>
         </div>
     </div>
@@ -85,11 +88,19 @@ export default {
             if (from < 0 || from >= cards.length || to < 0 || to >= cards.length) {
                 return;
             }
-            const [movedItem] = cards.splice(from, 1); // Удаляем объект с позиции `from`
-            cards.splice(to, 0, movedItem); // Вставляем объект на позицию `to`
+            const [movedItem] = cards.splice(from, 1); // Удаляем объект с позиции from
+            cards.splice(to, 0, movedItem); // Вставляем объект на позицию to
 
             this.handleClickOutside();
-        }
+        },
+        removeCard() {
+            const {type, context} = this.menu;
+            if (type !== 1 || !context) {
+                return;
+            }
+            this.store.removeCard(context.card_index);
+            this.handleClickOutside();
+        },
     }
 };
 </script>
@@ -114,5 +125,18 @@ export default {
 
 .card-buttons button {
     flex-grow: 1;
+}
+
+.items-menu  {
+    list-style-type: none;
+    padding: 0;
+    margin: 5px 0 0;
+}
+.items-menu li {
+    display: block;
+    padding: 2px 0;
+}
+.items-menu li:hover {
+    background-color: #ddd;
 }
 </style>
