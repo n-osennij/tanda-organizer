@@ -13,6 +13,7 @@
                 </button>
             </div>
             <ul class="items-menu">
+                <li @click="mark">Пометка</li>
                 <li @click="removeCard">Убрать</li>
             </ul>
         </div>
@@ -26,6 +27,7 @@
             </div>
             <ul class="items-menu">
                 <li @click="openFile">Открыть</li>
+                <li @click="mark">Пометка</li>
                 <li @click="removeCardItem">Убрать</li>
             </ul>
         </div>
@@ -121,6 +123,11 @@ export default {
             await window.electron.ipcRenderer.invoke('open-file', item.path);
             this.handleClickOutside();
         },
+        mark() {
+            const item = this.menu.context.item;
+            item.marked = !item.marked ?? true;
+            this.handleClickOutside();
+        }
     }
 };
 </script>

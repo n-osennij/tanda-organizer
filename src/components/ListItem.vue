@@ -1,5 +1,5 @@
 <template>
-    <li :data-path="item.path" @contextmenu.prevent="openContextMenu($event, item)">
+    <li :data-path="item.path" @contextmenu.prevent="openContextMenu($event, item)" :class="{marked: item.marked}">
         <span>{{ index + 1 }}. </span>{{ item.title }}
     </li>
 </template>
@@ -51,5 +51,9 @@ li {
 
 li:hover {
     background-color: #dddddd;
+}
+
+.marked {
+    background-color: #ff98006e;
 }
 </style>

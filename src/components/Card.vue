@@ -1,13 +1,10 @@
 <template>
-    <div class="card">
+    <div class="card" :class="{marked: card.marked}">
         <div class="card-header" @contextmenu.prevent="openContextMenu($event)">
             <div>
                 <span>{{ index + 1 }}</span>
                 <span class="card-title">{{ card.title }}</span>
             </div>
-            <small class="remove">
-
-            </small>
         </div>
         <draggable
             :animation="150"
@@ -77,14 +74,7 @@ export default {
     margin-left: 10px;
 }
 
-.card-header {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-}
-
-.remove a {
-    color: #656565;
-    text-decoration: none;
+.marked {
+    border-color: #FF9800;
 }
 </style>
