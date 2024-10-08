@@ -8,8 +8,8 @@ export async function handleExportFiles(event, cards) {
 async function copyAndRenameFiles(cards) {
     try {
         let targetDir = await selectTargetDirectory();
-        if (!targetDir || cards.length < 1) {
-            return; // Если папка не выбрана, выходим
+        if (!targetDir || targetDir.length < 1 || cards.length < 1) {
+            return false; // Если папка не выбрана, выходим
         }
 
         let folderIndex = 1;
@@ -29,12 +29,15 @@ async function copyAndRenameFiles(cards) {
     } catch (error) {
         throw error;
     }
+
+    return true;
 }
 
 // Функция для выбора целевой папки
 async function selectTargetDirectory() {
     const {canceled, filePaths} = await dialog.showOpenDialog({
-        properties: ['openDirectory'],
+        properties: ['openDirectory', 'createDirectory'],
+        promptToCreate: true,
     });
     if (canceled || filePaths.length === 0) {
         return [];

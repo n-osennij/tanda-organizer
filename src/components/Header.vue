@@ -1,10 +1,10 @@
 <template>
     <div class="my_header">
-        <button @click="openFolder">Импорт</button>
-        <button @click="addFolder">Добавить</button>
+        <button @click="openFolder" :disabled="isDialog">Импорт</button>
+        <button @click="addFolder" :disabled="isDialog">Добавить</button>
         <button @click="createEmptyCard">Создать танду</button>
         <button @click="clearTitles">Очистить номера</button>
-        <button @click="flatExport">Экспорт списком</button>
+        <button @click="flatExport" :disabled="isDialog">Экспорт списком</button>
         <button @click="about">?</button>
     </div>
 </template>
@@ -19,20 +19,29 @@ export default {
         const store = useStore();
         return {store};
     },
+    data() {
+        return {
+            isDialog: false,
+        };
+    },
     methods: {
         async openFolder() {
+            this.isDialog = true;
             const cards = await window.electron.ipcRenderer.invoke('open-folder');
             if (cards && cards.length > 0) {
                 this.store.cards = cards;
             }
             this.store.markDuplicates();
+            this.isDialog = false;
         },
         async addFolder() {
+            this.isDialog = true;
             const cards = await window.electron.ipcRenderer.invoke('open-folder');
             if (cards.length > 0) {
                 this.store.addCards(cards);
             }
             this.store.markDuplicates();
+            this.isDialog = false;
         },
         createEmptyCard() {
             this.store.addCard({
@@ -46,13 +55,23 @@ export default {
             this.store.markDuplicates();
         },
         async flatExport() {
+            this.isDialog = true;
             const cards = JSON.parse(JSON.stringify(this.store.cards));
             if (cards.length < 1) {
                 console.log('nothing export')
+                this.isDialog = false;
                 return;
             }
-            await window.electron.ipcRenderer.invoke('export-files', cards)
-            alert('Экспорт выполнен успешно')
+            try {
+                const result = await window.electron.ipcRenderer.invoke('export-files', cards)
+                if (result) {
+                    alert('Экспорт выполнен успешно')
+                }
+            } catch (err) {
+                console.log(err);
+                this.isDialog = false;
+            }
+            this.isDialog = false;
         },
         about() {
             window.open('https://github.com/n-osennij/tanda-organizer', '_blank').focus();

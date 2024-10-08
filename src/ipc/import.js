@@ -20,11 +20,19 @@ async function dirStructure(folderPath) {
     for (const file of files) {
         const filePath = path.join(folderPath, file.name);
         if (file.isDirectory()) {
-            structure.push({
-                id: uuid(),
-                title: file.name,
-                items: await scanSubFolder(filePath),
-            });
+            // Исключаем папки, которые начинаются с точки
+            if (file.name.startsWith('.')) {
+                continue;
+            }
+            const items = await scanSubFolder(filePath);
+            if (items.length > 0) {
+                structure.push({
+                    id: uuid(),
+                    title: file.name,
+                    items: items,
+                });
+            }
+
         }
     }
     const rootFiles = await scanSubFolder(folderPath);
