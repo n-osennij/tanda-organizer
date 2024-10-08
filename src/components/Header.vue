@@ -2,9 +2,10 @@
     <div class="my_header">
         <button @click="openFolder">Импорт</button>
         <button @click="addFolder">Добавить</button>
-        <button @click="createEmptyCard">Создать папку</button>
+        <button @click="createEmptyCard">Создать танду</button>
         <button @click="clearTitles">Очистить номера</button>
         <button @click="flatExport">Экспорт списком</button>
+        <button @click="about">?</button>
     </div>
 </template>
 
@@ -49,6 +50,9 @@ export default {
             }
             await window.electron.ipcRenderer.invoke('export-files', cards)
             alert('Экспорт выполнен успешно')
+        },
+        about() {
+            window.open('https://github.com/n-osennij/tanda-organizer', '_blank').focus();
         },
     },
 };
