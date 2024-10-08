@@ -8,3 +8,12 @@ export async function openFile(event, filePath) {
         throw err;
     }
 }
+
+export async function showFile(event, filePath) {
+    try {
+        await shell.showItemInFolder(filePath);
+    } catch (err) {
+        console.error('Ошибка при отображении в проводнике файла:', err);
+        throw err;
+    }
+}

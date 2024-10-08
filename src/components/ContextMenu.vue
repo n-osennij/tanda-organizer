@@ -28,6 +28,7 @@
             <ul class="items-menu">
                 <li @click="openFile">Открыть</li>
                 <li @click="mark">Пометка</li>
+                <li @click="show">Показать</li>
                 <li @click="removeCardItem">Убрать</li>
             </ul>
         </div>
@@ -129,7 +130,15 @@ export default {
             const item = this.menu.context.item;
             item.marked = !item.marked ?? true;
             this.handleClickOutside();
-        }
+        },
+        async show() {
+            if (!this.checkItemContext()) {
+                return;
+            }
+            const item = this.menu.context.item;
+            await window.electron.ipcRenderer.invoke('show-file-in-folder', item.path);
+            this.handleClickOutside();
+        },
     }
 };
 </script>

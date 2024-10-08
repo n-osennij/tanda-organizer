@@ -1,6 +1,6 @@
 import {openFolder} from "./ipc/import";
 import {handleExportFiles} from "./ipc/export";
-import {openFile} from "./ipc/open";
+import {openFile, showFile} from "./ipc/open";
 
 const {app, BrowserWindow, ipcMain, Menu, globalShortcut} = require('electron');
 const path = require('node:path');
@@ -10,6 +10,9 @@ ipcMain.handle('open-folder', openFolder);
 
 // IPC для проигрывания файла
 ipcMain.handle('open-file', openFile);
+
+// Обработка сообщения IPC для выделения файла в проводнике
+ipcMain.handle('show-file-in-folder', showFile);
 
 // IPC вызова функции копирования и переименования файлов
 ipcMain.handle('export-files', handleExportFiles);
