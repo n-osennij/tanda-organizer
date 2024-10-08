@@ -1,10 +1,10 @@
 <template>
     <div class="my_header">
         <button @click="openFolder" :disabled="isDialog">Импорт</button>
-        <button @click="addFolder" :disabled="isDialog">Добавить</button>
-        <button @click="createEmptyCard">Создать танду</button>
-        <button @click="clearTitles">Очистить номера</button>
-        <button @click="flatExport" :disabled="isDialog">Экспорт списком</button>
+        <button @click="addFolder" :disabled="isDialog || isNoCards">Добавить</button>
+        <button @click="createEmptyCard" :disabled="isNoCards">Создать танду</button>
+        <button @click="clearTitles" :disabled="isNoCards">Очистить номера</button>
+        <button @click="flatExport" :disabled="isDialog || isNoCards">Экспорт списком</button>
         <button @click="about">?</button>
     </div>
 </template>
@@ -23,6 +23,11 @@ export default {
         return {
             isDialog: false,
         };
+    },
+    computed: {
+        isNoCards() {
+            return this.store.cards.length < 1;
+        },
     },
     methods: {
         async openFolder() {
