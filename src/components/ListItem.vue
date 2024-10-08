@@ -1,5 +1,5 @@
 <template>
-    <li :data-path="item.path" @contextmenu.prevent="openContextMenu($event, item)">
+    <li :data-path="item.path" @contextmenu.prevent="openContextMenu($event, item)" :class="{clicked: isClicked}">
         <span>
             {{ index + 1 }}. {{ item.title }}
         </span>
@@ -35,6 +35,14 @@ export default {
     setup() {
         const store = useStore();
         return {store};
+    },
+    computed: {
+        isClicked() {
+            const context = this.store.contextMenu.context;
+            if (context && context.item) {
+                return context.item.id === this.item.id;
+            }
+        }
     },
     methods: {
         openContextMenu(event) {
@@ -80,4 +88,7 @@ li:hover {
     border-radius: 5px;
 }
 
+.clicked {
+    background-color: #9E9E9E;
+}
 </style>
