@@ -26,7 +26,7 @@
             </div>
             <ul class="items-menu">
                 <li>Открыть</li>
-                <li>Убрать</li>
+                <li @click="removeCardItem">Убрать</li>
             </ul>
         </div>
     </div>
@@ -56,16 +56,10 @@ export default {
             this.store.closeContextMenu();
         },
         moveItemToCard(target_card_index) {
-            const {type, context} = this.menu;
-            if (type !== 2 || !context) {
+            if (!this.checkItemContext()) {
                 return;
             }
-
-            const {card_index, item_index, item} = context;
-            if (card_index === undefined || item_index === undefined || !item) {
-                return;
-            }
-
+            const {card_index, item_index, item} = this.menu.context;
             const target_card = this.store.cards[target_card_index];
             if (target_card) {
                 target_card.items.push(item);
@@ -73,6 +67,16 @@ export default {
             }
 
             this.handleClickOutside();
+        },
+        checkItemContext() {
+            const {type, context} = this.menu;
+            if (type !== 2 || !context) {
+                return false;
+            }
+
+            const {card_index, item_index, item} = context;
+            return !(card_index === undefined || item_index === undefined || !item);
+
         },
         spliceItem(card_id, item_id) {
             this.store.cards[card_id].items.splice(item_id, 1);
@@ -101,6 +105,14 @@ export default {
             this.store.removeCard(context.card_index);
             this.handleClickOutside();
         },
+        removeCardItem() {
+            if (!this.checkItemContext()) {
+                return;
+            }
+            const {card_index, item_index} = this.menu.context;
+            this.spliceItem(card_index, item_index)
+            this.handleClickOutside();
+        },
     }
 };
 </script>
@@ -127,15 +139,17 @@ export default {
     flex-grow: 1;
 }
 
-.items-menu  {
+.items-menu {
     list-style-type: none;
     padding: 0;
     margin: 5px 0 0;
 }
+
 .items-menu li {
     display: block;
     padding: 2px 0;
 }
+
 .items-menu li:hover {
     background-color: #ddd;
 }
