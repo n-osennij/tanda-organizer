@@ -45,7 +45,7 @@ async function scanSubFolder(folder) {
     const files = fs.readdirSync(folder, {withFileTypes: true});
     let items = [];
     for (const file of files) {
-        if (!file.isDirectory()) {
+        if (!file.isDirectory() && isAudio(file.name)) {
             items.push({
                 id: uuid(),
                 title: file.name,
@@ -55,4 +55,15 @@ async function scanSubFolder(folder) {
     }
 
     return items;
+}
+
+function isAudio(title) {
+    const audioExtensions = [
+        '.mp3', '.aac', '.ogg', '.wma', '.flac', '.alac', '.wav', '.aiff',
+        '.pcm', '.m4a', '.mpc', '.aif', '.aifc', '.au', '.amr', '.ape',
+        '.dss', '.dsf', '.dff', '.gsm', '.m3u', '.m3u8', '.mmf',
+        '.mogg', '.opus', '.raw', '.tta', '.voc', '.wv', '.8svx',
+        '.cda', '.ra', '.rm', '.mid', '.midi', '.kar', '.rmi',
+    ];
+    return audioExtensions.some(ext => title.toLowerCase().endsWith(ext));
 }
