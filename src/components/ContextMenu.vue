@@ -106,6 +106,7 @@ export default {
             }
             this.store.removeCard(context.card_index);
             this.handleClickOutside();
+            this.store.markDuplicates();
         },
         removeCardItem() {
             if (!this.checkItemContext()) {
@@ -114,6 +115,7 @@ export default {
             const {card_index, item_index} = this.menu.context;
             this.spliceItem(card_index, item_index)
             this.handleClickOutside();
+            this.store.markDuplicates();
         },
         async openFile() {
             if (!this.checkItemContext()) {

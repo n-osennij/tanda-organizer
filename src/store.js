@@ -54,5 +54,26 @@ export const useStore = defineStore('store', {
             menu.type = 0;
             menu.context = Object;
         },
+        markDuplicates() {
+            const cards = this.cards;
+            let titleCount = {};
+            cards.forEach(card => {
+                card.items.forEach(item => {
+                    item.duplicate = false;
+                    if (titleCount[item.title]) {
+                        titleCount[item.title]++;
+                    } else {
+                        titleCount[item.title] = 1;
+                    }
+                });
+            });
+            cards.forEach(card => {
+                card.items.forEach(item => {
+                    if (titleCount[item.title] > 1) {
+                        item.duplicate = true;
+                    }
+                });
+            });
+        },
     },
 })

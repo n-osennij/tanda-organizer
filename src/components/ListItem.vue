@@ -1,6 +1,12 @@
 <template>
-    <li :data-path="item.path" @contextmenu.prevent="openContextMenu($event, item)" :class="{marked: item.marked}">
-        <span>{{ index + 1 }}. </span>{{ item.title }}
+    <li :data-path="item.path" @contextmenu.prevent="openContextMenu($event, item)">
+        <span>
+            {{ index + 1 }}. {{ item.title }}
+        </span>
+        <span class="marks">
+            <small class="duplicate-pill" v-if="item.duplicate">дубль</small>
+            <small class="marked" v-if="item.marked">*</small>
+        </span>
     </li>
 </template>
 
@@ -47,6 +53,15 @@ li {
     list-style-type: none;
     margin-left: 18px;
     cursor: default;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.marks {
+    display: flex;
+    gap: 10px;
+    padding-left: 15px;
 }
 
 li:hover {
@@ -54,6 +69,15 @@ li:hover {
 }
 
 .marked {
-    background-color: #ff98006e;
+    color: red;
+    font-weight: bold;
 }
+
+.duplicate-pill {
+    background-color: red;
+    color: white;
+    padding: 0 4px;
+    border-radius: 5px;
+}
+
 </style>

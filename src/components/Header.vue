@@ -25,12 +25,14 @@ export default {
             if (cards && cards.length > 0) {
                 this.store.cards = cards;
             }
+            this.store.markDuplicates();
         },
         async addFolder() {
             const cards = await window.electron.ipcRenderer.invoke('open-folder');
             if (cards.length > 0) {
                 this.store.addCards(cards);
             }
+            this.store.markDuplicates();
         },
         createEmptyCard() {
             this.store.addCard({
@@ -41,6 +43,7 @@ export default {
         },
         clearTitles() {
             this.store.clearTitles();
+            this.store.markDuplicates();
         },
         async flatExport() {
             const cards = JSON.parse(JSON.stringify(this.store.cards));
