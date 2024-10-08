@@ -6,11 +6,13 @@
     >
         <!-- Клик по заголовку карточки/танды -->
         <div v-if="menu.type === 1">
-            <span>Сделайть танду n-ой:</span>
-            <div class="card-buttons">
-                <button v-for="(card, index) in store.cards" @click="moveCard(index)">
-                    {{ index + 1 }}
-                </button>
+            <div class="buttons-div" v-if="store.cards.length > 1">
+                <span>Сделайть танду n-ой:</span>
+                <div class="card-buttons">
+                    <button v-for="(card, index) in store.cards" @click="moveCard(index)">
+                        {{ index + 1 }}
+                    </button>
+                </div>
             </div>
             <ul class="items-menu">
                 <li @click="mark">Пометка</li>
@@ -19,11 +21,13 @@
         </div>
         <!-- Клик по элементу карточки/мелодии -->
         <div v-if="menu.type === 2">
-            <span>Переместить в танду:</span>
-            <div class="card-buttons">
-                <button v-for="(card, index) in store.cards" @click="moveItemToCard(index)">
-                    {{ index + 1 }}
-                </button>
+            <div class="buttons-div" v-if="store.cards.length > 1">
+                <span>Переместить в танду:</span>
+                <div class="card-buttons">
+                    <button v-for="(card, index) in store.cards" @click="moveItemToCard(index)" :class="{marked: card.marked}">
+                        {{ index + 1 }}
+                    </button>
+                </div>
             </div>
             <ul class="items-menu">
                 <li @click="openFile">Открыть</li>
@@ -143,7 +147,7 @@ export default {
 };
 </script>
 
-<style>
+<style scoped>
 .context-menu {
     position: absolute;
     background: #fff;
@@ -152,6 +156,10 @@ export default {
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
     max-width: 220px;
     width: 100%;
+}
+
+.buttons-div {
+    margin-bottom: 5px;
 }
 
 .card-buttons {
@@ -168,7 +176,7 @@ export default {
 .items-menu {
     list-style-type: none;
     padding: 0;
-    margin: 5px 0 0;
+    margin: 0;
 }
 
 .items-menu li {
@@ -178,5 +186,10 @@ export default {
 
 .items-menu li:hover {
     background-color: #ddd;
+}
+
+.marked {
+    color: #FF9800;
+    font-weight: bold;
 }
 </style>

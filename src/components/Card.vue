@@ -1,5 +1,5 @@
 <template>
-    <div class="card" :class="{marked: card.marked}">
+    <div class="card" :class="{marked: card.marked, clicked: isClicked}">
         <div class="card-header" @contextmenu.prevent="openContextMenu($event)">
             <div>
                 <span>{{ index + 1 }}</span>
@@ -50,6 +50,14 @@ export default {
         const store = useStore();
         return {store};
     },
+    computed: {
+        isClicked() {
+            const context = this.store.contextMenu.context;
+            if (context && context.item) {
+                return context.item.id === this.card.id;
+            }
+        }
+    },
     methods: {
         updateItemOrder(newItems) {
             this.store.setCardItems(this.index, newItems);
@@ -77,4 +85,9 @@ export default {
 .marked {
     border-color: #FF9800;
 }
+
+.clicked {
+    border-color: black;
+}
+
 </style>
