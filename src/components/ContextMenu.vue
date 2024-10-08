@@ -25,7 +25,7 @@
                 </button>
             </div>
             <ul class="items-menu">
-                <li>Открыть</li>
+                <li @click="openFile">Открыть</li>
                 <li @click="removeCardItem">Убрать</li>
             </ul>
         </div>
@@ -111,6 +111,14 @@ export default {
             }
             const {card_index, item_index} = this.menu.context;
             this.spliceItem(card_index, item_index)
+            this.handleClickOutside();
+        },
+        async openFile() {
+            if (!this.checkItemContext()) {
+                return;
+            }
+            const item = this.menu.context.item;
+            await window.electron.ipcRenderer.invoke('open-file', item.path);
             this.handleClickOutside();
         },
     }
