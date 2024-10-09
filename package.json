@@ -1,41 +1,42 @@
 {
-  "name": "my-vue-app",
-  "productName": "my-vue-app",
+  "name": "tanda_organizer",
   "version": "1.0.0",
-  "description": "My Electron application description",
-  "main": ".vite/build/main.js",
-  "scripts": {
-    "start": "electron-forge start",
-    "package": "electron-forge package",
-    "make": "electron-forge make",
-    "publish": "electron-forge publish",
-    "lint": "echo \"No linting configured\""
-  },
-  "devDependencies": {
-    "@electron-forge/cli": "^7.5.0",
-    "@electron-forge/maker-squirrel": "^7.5.0",
-    "@electron-forge/maker-deb": "^7.5.0",
-    "@electron-forge/maker-rpm": "^7.5.0",
-    "@electron-forge/maker-zip": "^7.5.0",
-    "@electron-forge/plugin-auto-unpack-natives": "^7.5.0",
-    "@electron-forge/plugin-fuses": "^7.5.0",
-    "@electron-forge/plugin-vite": "^7.5.0",
-    "@electron/fuses": "^1.8.0",
-    "@vitejs/plugin-vue": "^5.1.4",
-    "electron": "32.1.2",
-    "electron-builder": "^25.1.7",
-    "vite": "^5.4.8"
-  },
-  "keywords": [],
+  "description": "The program is designed to organize/sort tango tandas and musical compositions with subsequent export as an ordered numbered list of files",
+  "main": "./out/main/index.js",
   "author": {
     "name": "n-osennij",
     "email": "n.osennij@gmail.com"
   },
-  "license": "MIT",
+  "homepage": "https://github.com/n-osennij/tanda-organizer",
+  "scripts": {
+    "start": "electron-vite preview",
+    "dev": "electron-vite dev",
+    "build": "electron-vite build",
+    "postinstall": "electron-builder install-app-deps",
+    "build:unpack": "npm run build && electron-builder --dir",
+    "build:win": "npm run build && electron-builder --win --ia32",
+    "build:mac": "npm run build && electron-builder --mac",
+    "build:linux": "npm run build && electron-builder --linux"
+  },
   "dependencies": {
+    "@electron-toolkit/preload": "^3.0.1",
+    "@electron-toolkit/utils": "^3.0.0"
+  },
+  "devDependencies": {
+    "@electron-toolkit/eslint-config": "^1.0.2",
+    "@rushstack/eslint-patch": "^1.10.3",
+    "@vitejs/plugin-vue": "^5.0.5",
+    "@vue/eslint-config-prettier": "^9.0.0",
+    "electron": "^31.0.2",
+    "electron-builder": "^24.13.3",
+    "electron-vite": "^2.3.0",
+    "eslint": "^8.57.0",
+    "eslint-plugin-vue": "^9.26.0",
+    "prettier": "^3.3.2",
+    "vite": "^5.3.1",
+    "vue": "^3.4.30",
     "pinia": "^2.2.4",
     "uuid": "^10.0.0",
-    "vue": "^3.5.11",
     "vuedraggable": "^4.1.0"
   }
 }

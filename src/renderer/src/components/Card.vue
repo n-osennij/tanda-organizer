@@ -1,0 +1,95 @@
+<template>
+  <div :class="{ marked: card.marked, clicked: isClicked }" class="card">
+    <div class="card-header" @contextmenu.prevent="openContextMenu($event)">
+      <div>
+        <span>{{ index + 1 }}</span>
+        <span class="card-title">{{ card.title }}</span>
+      </div>
+    </div>
+    <draggable
+      :animation="150"
+      :ghost-class="'sortable-ghost'"
+      :model-value="card.items"
+      group="list"
+      item-key="id"
+      @start="this.store.closeContextMenu()"
+      @update:model-value="updateItemOrder"
+    >
+      <template #item="{ element, index }">
+        <ListItem :card_index="this.index" :index="index" :item="element" />
+      </template>
+    </draggable>
+  </div>
+</template>
+
+<script>
+import draggable from "vuedraggable";
+import ListItem from "./ListItem.vue";
+import { useStore } from "../store";
+
+export default {
+  components: {
+    draggable,
+    ListItem,
+  },
+  props: {
+    index: {
+      type: Number,
+      required: true,
+    },
+    card: {
+      type: {
+        id: String,
+        title: String,
+        items: Array,
+      },
+      required: true,
+    },
+  },
+  setup() {
+    const store = useStore();
+    return { store };
+  },
+  computed: {
+    isClicked() {
+      const context = this.store.contextMenu.context;
+      if (context && context.item) {
+        return context.item.id === this.card.id;
+      }
+    },
+  },
+  methods: {
+    updateItemOrder(newItems) {
+      this.store.setCardItems(this.index, newItems);
+    },
+    openContextMenu(event) {
+      this.store.openContextMenu(event, 1, {
+        card_index: this.index,
+        item: this.card,
+      });
+    },
+  },
+};
+</script>
+
+<style scoped>
+.card {
+  border: 1px solid #ccc;
+  margin-bottom: 10px;
+  margin-top: 10px;
+  padding: 5px;
+}
+
+.card-title {
+  font-weight: bold;
+  margin-left: 10px;
+}
+
+.marked {
+  border-color: #ff9800;
+}
+
+.clicked {
+  border-color: black;
+}
+</style>

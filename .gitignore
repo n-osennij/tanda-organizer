@@ -1,4 +1,6 @@
-/.idea/
-/.vite/
-/node_modules/
-/out/
+node_modules
+dist
+out
+.DS_Store
+*.log*
+.idea
