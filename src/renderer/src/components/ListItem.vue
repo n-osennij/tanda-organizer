@@ -3,6 +3,7 @@
         :class="{ clicked: isClicked }"
         :data-path="item.path"
         @contextmenu.prevent="openContextMenu($event, item)"
+        @dblclick="openFile"
     >
         <span> {{ index + 1 }}. {{ item.title }} </span>
         <span class="marks">
@@ -53,6 +54,9 @@ export default {
                 item_index: parseInt(this.index),
                 item: this.item,
             });
+        },
+        async openFile() {
+            await window.electron.ipcRenderer.invoke("open-file", this.item.path);
         },
     },
 };
