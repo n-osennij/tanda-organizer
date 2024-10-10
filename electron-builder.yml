@@ -13,7 +13,7 @@ asarUnpack:
 win:
   executableName: 'Tanda organizer'
 nsis:
-  artifactName: ${name}-${version}-setup.${ext}
+  artifactName: ${name}-${version}-windows_10-11-x64.${ext}
   shortcutName: ${productName}
   uninstallDisplayName: ${productName}
   createDesktopShortcut: always

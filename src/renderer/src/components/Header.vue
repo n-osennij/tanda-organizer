@@ -1,17 +1,11 @@
 <template>
     <div class="my_header">
         <button :disabled="isDialog" @click="openFolder">Импорт</button>
-        <button :disabled="isDialog || isNoCards" @click="addFolder">
-            Добавить
-        </button>
-        <button :disabled="isNoCards" @click="createEmptyCard">
-            Создать танду
-        </button>
-        <button :disabled="isNoCards" @click="numbersToCards">Номера в танды</button>
+        <button :disabled="isDialog || isNoCards" @click="addFolder">Добавить</button>
+        <button :disabled="isNoCards" @click="createEmptyCard">Создать танду</button>
+        <NumbersToCards :is-disabled="isNoCards"/>
         <button :disabled="isNoCards" @click="clearTitles">Очистить номера</button>
-        <button :disabled="isDialog || isNoCards" @click="flatExport">
-            Экспорт списком
-        </button>
+        <button :disabled="isDialog || isNoCards" @click="flatExport">Экспорт списком</button>
         <button @click="about">?</button>
     </div>
 </template>
@@ -19,9 +13,11 @@
 <script>
 import {v4 as uuid} from "uuid";
 import {useStore} from "../store";
+import NumbersToCards from "./header/numbersToCards.vue";
 
 export default {
     name: "Header",
+    components: {NumbersToCards},
     setup() {
         const store = useStore();
         return {store};
@@ -58,7 +54,7 @@ export default {
         createEmptyCard() {
             this.store.addCard({
                 id: uuid(),
-                title: "perfect tanda",
+                title: "Идеальная танда",
                 items: [],
             });
         },
@@ -92,9 +88,6 @@ export default {
             window
                 .open("https://github.com/n-osennij/tanda-organizer", "_blank")
                 .focus();
-        },
-        numbersToCards() {
-
         },
     },
 };
