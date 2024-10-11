@@ -40,4 +40,4 @@
 
 Разработчик: [Никита Осенний](https://github.com/n-osennij/tanda-organizer), Минск.
 
-Версия программы: [1.1.0](https://github.com/n-osennij/tanda-organizer/releases) от 10.10.2024 г.
+Версия программы: [1.2.0](https://github.com/n-osennij/tanda-organizer/releases) от 11.10.2024 г.

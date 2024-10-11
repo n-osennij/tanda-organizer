@@ -149,8 +149,7 @@
         </p>
         <p>
             Версия программы:
-            <a href="https://github.com/n-osennij/tanda-organizer/releases">1.1.0</a> от
-            10.10.2024 г.
+            <a href="https://github.com/n-osennij/tanda-organizer/releases">1.2.0</a> от 11.10.2024 г.
         </p>
     </div>
 </template>
