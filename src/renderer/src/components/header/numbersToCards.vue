@@ -20,6 +20,11 @@ export default {
     },
     methods: {
         numbersToCards() {
+            const res = confirm('Реорганизовать карточки, сделав номера в начале имен файлов тандами?');
+            if (!res) {
+                return;
+            }
+
             const cards = this.store.cards;
 
             // Получаем все items из всех cards

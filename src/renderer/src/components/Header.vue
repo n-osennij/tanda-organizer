@@ -59,6 +59,10 @@ export default {
             });
         },
         clearTitles() {
+            const res = confirm('Убрать из начала имен файлов и карточек старую нумерацию?');
+            if (!res) {
+                return;
+            }
             this.store.clearTitles();
             this.store.markDuplicates();
         },
