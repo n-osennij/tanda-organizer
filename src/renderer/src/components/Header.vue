@@ -74,14 +74,15 @@ export default {
                 this.isDialog = false;
                 return;
             }
-            await window.electron.ipcRenderer
+            const res = await window.electron.ipcRenderer
                 .invoke("export-files", cards)
-                .then(function () {
-                    alert("Экспорт выполнен успешно");
-                }).catch(function (err) {
+                .catch(function (err) {
                     alert("Во время экспорта что-то пошло не так - " + err);
                     console.log(err);
                 });
+            if (res) {
+                alert("Экспорт выполнен успешно");
+            }
             this.isDialog = false;
         },
         about() {
