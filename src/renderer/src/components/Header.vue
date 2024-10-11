@@ -66,22 +66,18 @@ export default {
             this.isDialog = true;
             const cards = JSON.parse(JSON.stringify(this.store.cards));
             if (cards.length < 1) {
-                console.log("nothing export");
+                alert("Нет ни одной танды для экспорта")
                 this.isDialog = false;
                 return;
             }
-            try {
-                const result = await window.electron.ipcRenderer.invoke(
-                    "export-files",
-                    cards,
-                );
-                if (result) {
+            await window.electron.ipcRenderer
+                .invoke("export-files", cards)
+                .then(function () {
                     alert("Экспорт выполнен успешно");
-                }
-            } catch (err) {
-                console.log(err);
-                this.isDialog = false;
-            }
+                }).catch(function (err) {
+                    alert("Во время экспорта что-то пошло не так - " + err);
+                    console.log(err);
+                });
             this.isDialog = false;
         },
         about() {
