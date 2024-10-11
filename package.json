@@ -1,6 +1,6 @@
 {
   "name": "tanda_organizer",
-  "version": "1.1.0",
+  "version": "1.2.0",
   "description": "The program is designed to organize/sort tango tandas and musical compositions with subsequent export as an ordered numbered list of files",
   "main": "./out/main/index.js",
   "author": {
