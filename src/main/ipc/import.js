@@ -17,6 +17,8 @@ export async function openFolder() {
 async function dirStructure(folderPath) {
     const files = fs.readdirSync(folderPath, {withFileTypes: true});
     let structure = [];
+
+    // Перебираем вложенные папки
     for (const file of files) {
         const filePath = path.join(folderPath, file.name);
         if (file.isDirectory()) {
@@ -35,6 +37,8 @@ async function dirStructure(folderPath) {
 
         }
     }
+
+    // Добавляем файлы из root дериктории
     const rootFiles = await scanSubFolder(folderPath);
     if (rootFiles.length > 0) {
         const normalizedPath = folderPath.replace(/\\/g, '/'); // заменяем все \ на /
@@ -45,6 +49,29 @@ async function dirStructure(folderPath) {
             items: rootFiles,
         });
     }
+
+    // Убираем пробелы
+    structure.forEach(item => {
+        item.title = item.title.trim();
+    });
+
+    // Сортируем по возрастанию
+    structure = structure.sort((a, b) => {
+        const getNumberPrefix = (str) => {
+            const match = str.match(/^\d+/); // Ищем числовой префикс
+            return match ? parseInt(match[0], 10) : 0; // Возвращаем число или 0
+        };
+
+        const numA = getNumberPrefix(a.title);
+        const numB = getNumberPrefix(b.title);
+
+        if (numA !== numB) {
+            return numA - numB; // Сравниваем числовые префиксы
+        }
+
+        // Если числовые префиксы одинаковые, сравниваем оставшуюся часть строки
+        return a.title.localeCompare(b.title);
+    });
 
     return structure;
 }
